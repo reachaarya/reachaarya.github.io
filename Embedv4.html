@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cypher Login</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 2px solid #00ff00;
+            box-shadow: 0px 0px 10px #00ff00;
+        }
+        h1 {
+            font-size: 2rem;
+            text-shadow: 0 0 5px #00ff00;
+        }
+        input, button {
+            background: black;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-size: 1.2rem;
+            padding: 10px;
+            outline: none;
+            margin-top: 10px;
+        }
+        button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Enter Access Code</h1>
+        <input type="password" id="password" placeholder="******">
+        <button onclick="checkPassword()">Access</button>
+        <p id="error" style="color: red;"></p>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById("password").value;
+            const correctPassword = "hacker42"; // Change this to your desired password
+
+            if (password === correctPassword) {
+                // Open about:blank tab
+                let newTab = window.open("about:blank", "_blank");
+
+                // Encode and inject iframe into the new tab
+                let encodedHTML = btoa(`
+                    <html>
+                    <head>
+                        <title>EmbedV3 Will BE BACK, Enjoy This For Now...</title>
+                        <style>
+                            body { margin: 0; background: black; text-align: center; }
+                            iframe { width: 100vw; height: 100vh; border: none; display: none; }
+                        </style>
+                    </head>
+                    <body>
+                        <script>
+                            setTimeout(() => {
+                                document.querySelector("iframe").style.display = "block";
+                            }, 2000); // Delay to hide detection
+                        </` + `script>
+                        <iframe id="hiddenFrame"></iframe>
+                        <script>
+                            let iframe = document.getElementById("hiddenFrame");
+                            iframe.src = atob("aHR0cDovL21vbmtleWdnLmVtYmVkdjMuaW5maW5pdHlmcmVlYXBwLmNvbS8="); // Encodes URL
+                        </` + `script>
+                    </body>
+                    </html>
+                `);
+
+                newTab.document.write(atob(encodedHTML));
+                newTab.document.close();
+
+                // Redirect original login page to FISD login
+                window.location.href = "https://fisd.instructure.com/login/ldap";
+            } else {
+                document.getElementById("error").innerText = "Access Denied!";
+            }
+        }
+    </script>
+
+</body>
+</html>
